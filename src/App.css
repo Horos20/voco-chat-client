@@ -38,6 +38,7 @@ h1 {
     border-radius: 5px;
     padding: 10px;
     height: 520px;
+    overflow: scroll;
 }
 
 .text-box {
@@ -78,9 +79,10 @@ p {
     justify-content: center;
     padding: 5px;
     border-right: 2px solid black;
+    font-weight: bold;
 }
 
-.user-message {
+.user-message, textarea {
     font-size: 0.9em;
     height: 100%;
     text-align: left;
@@ -90,5 +92,11 @@ p {
     padding: 5px;
 }
 
+textarea {
+    background: lightgray;
+    border: none;
+    width: 100%;
+    resize: none !important;
+}
 
 
