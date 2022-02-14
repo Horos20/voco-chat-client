@@ -27,30 +27,37 @@ function Chat() {
 
     function addNewMessage() {
         const newMessage = messages.concat({ userName, text });
-        newMessages(newMessage);
+        if (document.getElementById('message').value == '') {
+
+        } else {
+            newMessages(newMessage);
+        }
+        document.getElementById('message').value = '';
     }
 
     return (
-        <Container className="page-container">
-            <h1>VOCO</h1>
-            <div className="chat-container">
-                    <div className="messages-box">
-                        {messages.map((message, index) => {
-                            return (
-                                <div className="text-box" id="text-box" key={index}>
-                                    <div className="message" >{message.text}</div>
-                                    <div className="user-name" >{message.userName}</div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                    <div className="user-box">
-                        <div className="user" id="user">John Smith</div>
-                        <div className="user-message"><textarea id="message" onChange={textChange}></textarea></div>
-                    </div>
+        <div className="page-container">
+            <div className="content-container">
+                <h1>VOCO</h1>
+                <div className="chat-container">
+                        <div className="messages-box">
+                            {messages.map((message, index) => {
+                                return (
+                                    <div className="text-box" id="text-box" key={index}>
+                                        <div className="message" >{message.text}</div>
+                                        <div className="user-name" >{message.userName}</div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <div className="user-box">
+                            <div className="user" id="user">John Smith</div>
+                            <div className="user-message"><textarea id="message" onChange={textChange}></textarea></div>
+                        </div>
+                </div>
+                <Button id="button" onClick={addNewMessage}>Send</Button>
             </div>
-            <Button className="btn-block" onClick={addNewMessage}>Send</Button>
-        </Container>
+        </div>
     );
 }
 
