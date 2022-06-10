@@ -20,18 +20,14 @@ function Chat() {
     const [text, setText] = useState('');
     const [userName, setUserName] = useState('John Smith');
 
-    function textChange(event) {
-        setText(event.target.value);
-    }
-
     function addNewMessage() {
         const newMessage = messages.concat({ userName, text });
-        if (document.getElementById('message').value == '') {
-
+        if (text === '') {
+            return "Input empty"
         } else {
             newMessages(newMessage);
         }
-        document.getElementById('message').value = '';
+        setText('')
     }
 
     return (
@@ -50,11 +46,11 @@ function Chat() {
                             })}
                         </div>
                         <div className="user-box">
-                            <textarea className="user" id="user" value={userName}
+                            <textarea className="user" id="user" value={userName} maxLength='40'
                                 onChange={(event) => {
                                     setUserName(event.target.value);
                                 }}/>
-                            <div className="user-message"><textarea id="message" onChange={textChange}></textarea></div>
+                            <div className="user-message"><textarea id="message" onChange={(e) => setText(e.target.value)} value={text} maxLength='100'></textarea></div>
                         </div>
                 </div>
                 <Button id="button" onClick={addNewMessage}>Send</Button>
