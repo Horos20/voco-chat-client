@@ -1,32 +1,46 @@
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
-import {useState} from "react";
+import {useState, useEffect} from "react";
 
 function Chat() {
 
-    const DUMMY_DATA = [
-        {
-            userName: 'John Smith',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore'
-        },
-        {
-            userName: 'John Smith',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore'
-        }
-    ]
-
-    const [messages, newMessages] = useState(DUMMY_DATA);
+    const [messages, newMessages] = useState([]);
     const [text, setText] = useState('');
     const [userName, setUserName] = useState('John Smith');
 
-    function addNewMessage() {
-        const newMessage = messages.concat({ userName, text });
+    useEffect(() => {
+        const getData = () => {
+          return fetch('http://localhost:8080', {method: 'GET'}
+          ).then (res => {
+            return res.json()
+          }).then (data => {
+            newMessages(data)
+          })
+        }
+        getData();
+      }, []);
+
+    function addNewMessage(e) {
+        e.preventDefault();
+
         if (text === '') {
             return "Input empty"
         } else {
-            newMessages(newMessage);
+            fetch('http://localhost:8080', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            userName: userName,
+            text: text
+            })
+            }).then(res => {
+            return res.json()
+            }).then(data => newMessages([...messages, data]))
         }
+        
         setText('')
     }
 
