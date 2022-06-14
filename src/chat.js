@@ -1,7 +1,7 @@
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
-import {useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
 import io from "socket.io-client";
 
 function Chat() {
@@ -65,7 +65,14 @@ function Chat() {
 
 
 
-
+    // Autoscroll
+    const messagesEndRef = useRef(null)
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+    useEffect(() => {
+        scrollToBottom()
+    }, [messages]);
 
 
 
@@ -84,6 +91,8 @@ function Chat() {
                                 )
                             })}
 
+                            {/*   Dummy_div for autoscroll   */}
+                            <div ref={messagesEndRef}/>
 
                         </div>
                         <div className="user-box">
