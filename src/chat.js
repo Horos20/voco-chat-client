@@ -5,22 +5,28 @@ import {useState, useEffect} from "react";
 import io from "socket.io-client";
 
 function Chat() {
-    const socket = io('http://localhost:8080');
 
     const [messages, newMessages] = useState([]);
     const [text, setText] = useState('');
     const [userName, setUserName] = useState('John Smith');
+    const [currentSocket, setCurrentSocket] = useState(null)
 
-    socket.on('receive-message', (message, user) => {
-        newMessages([...messages, {text: message, userName: user}])
-    })
 
+
+    /*    Socketio connection    */
     useEffect(() => {
-        /*   Socket.io connection   */
-        socket.on("connect", () => {
-            console.log("You are connected")
+        const socket = io('http://localhost:8080');
+        setCurrentSocket(socket)
+        socket.on('receive-message', (message, user) => {
+            newMessages((messages) => ([...messages, {text: message, userName: user}]))
         })
+        return () => socket.close();
+    }, []);
 
+
+
+    /*    GET initial data on page load    */
+    useEffect(() => {
         const getData = () => {
           return fetch('http://localhost:8080', {method: 'GET'}
         ).then (res => {
@@ -30,12 +36,14 @@ function Chat() {
         })
         }
         getData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+
+
+    /*    POST new message    */
     function addNewMessage(e) {
         e.preventDefault();
-
-        
         if (text === '') {
             return "Input empty"
         } else {
@@ -50,12 +58,16 @@ function Chat() {
                 })
             }).then(res => {
                 return res.json()
-            }).then(data => newMessages([...messages, data]))
-            socket.emit('sendMessage', text, userName)
+            }).then(data => newMessages([...messages, data]), currentSocket.emit("sendMessage", text, userName))
         }
-        
         setText('')
     }
+
+
+
+
+
+
 
     return (
         <div className="page-container">
@@ -71,6 +83,8 @@ function Chat() {
                                     </div>
                                 )
                             })}
+
+
                         </div>
                         <div className="user-box">
                             <textarea className="user" id="user" value={userName} maxLength='40'
