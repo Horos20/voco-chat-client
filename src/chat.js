@@ -17,8 +17,8 @@ function Chat() {
     useEffect(() => {
         const socket = io('http://localhost:8080');
         setCurrentSocket(socket)
-        socket.on('receive-message', (message, user) => {
-            newMessages((messages) => ([...messages, {text: message, userName: user}]))
+        socket.on('receive-message', (message, user, date) => {
+            newMessages((messages) => ([...messages, {text: message, userName: user, date: date}]))
         })
         return () => socket.close();
     }, []);
@@ -86,7 +86,10 @@ function Chat() {
                                 return (
                                     <div className="text-box" id="text-box" key={index}>
                                         <div className="message" >{message.text}</div>
-                                        <div className="user-name" >{message.userName}</div>
+                                        <div className='user_date-wrapper'>
+                                            <div className="user-name" >{message.userName}</div>
+                                            <div className='date'>{message.date}</div>
+                                        </div>
                                     </div>
                                 )
                             })}
@@ -100,7 +103,7 @@ function Chat() {
                                 onChange={(event) => {
                                     setUserName(event.target.value);
                                 }}/>
-                            <div className="user-message"><textarea id="message" onChange={(e) => setText(e.target.value)} value={text} maxLength='100'></textarea></div>
+                            <div className="user-message"><textarea id="message" onChange={(e) => setText(e.target.value)} value={text} maxLength='100' placeholder='Write here...'></textarea></div>
                         </div>
                 </div>
                 <Button id="button" onClick={addNewMessage}>Send</Button>
