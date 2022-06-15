@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/voco-chat-client/static/css/main.ca71db7d.css",
+    "main.js": "/voco-chat-client/static/js/main.623e16c7.js",
+    "index.html": "/voco-chat-client/index.html",
+    "main.ca71db7d.css.map": "/voco-chat-client/static/css/main.ca71db7d.css.map",
+    "main.623e16c7.js.map": "/voco-chat-client/static/js/main.623e16c7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ca71db7d.css",
+    "static/js/main.623e16c7.js"
+  ]
+}
